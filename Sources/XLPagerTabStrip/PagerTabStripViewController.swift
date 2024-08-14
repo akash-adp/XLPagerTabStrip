@@ -216,7 +216,11 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
     }
 
     open func virtualPageFor(contentOffset: CGFloat) -> Int {
-        return Int((contentOffset + 1.5 * pageWidth) / pageWidth) - 1
+        if (self.pageWidth == 0) {
+            return 1
+        } else {
+            return Int((contentOffset + 1.5 * pageWidth) / pageWidth) - 1
+        }
     }
 
     open func pageFor(virtualPage: Int) -> Int {
