@@ -68,6 +68,7 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
     }
 
     open var scrollPercentage: CGFloat {
+        guard pageWidth > 0 else { return 0 }
         if swipeDirection != .right {
             let module = fmod(containerView.contentOffset.x, pageWidth)
             return module == 0.0 ? 1.0 : module / pageWidth
@@ -216,11 +217,8 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
     }
 
     open func virtualPageFor(contentOffset: CGFloat) -> Int {
-        if (pageWidth == 0) {
-            return 1
-        } else {
-            return Int((contentOffset + 1.5 * pageWidth) / pageWidth) - 1
-        }
+        guard pageWidth > 0 else { return 0 }
+        return Int((contentOffset + 1.5 * pageWidth) / pageWidth) - 1
     }
 
     open func pageFor(virtualPage: Int) -> Int {
