@@ -110,7 +110,7 @@ open class SegmentedPagerTabStripViewController: PagerTabStripViewController, Pa
         shouldUpdateSegmentedControl = true
     }
     
-    public func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController) {
+    open func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController) {
         // Empty Override
     }
 }

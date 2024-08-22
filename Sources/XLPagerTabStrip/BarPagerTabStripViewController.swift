@@ -96,7 +96,7 @@ open class BarPagerTabStripViewController: PagerTabStripViewController, PagerTab
         barView.moveTo(index: toIndex, animated: true)
     }
     
-    public func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController) {
+    open func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController) {
         // Empty Override
     }
 }
