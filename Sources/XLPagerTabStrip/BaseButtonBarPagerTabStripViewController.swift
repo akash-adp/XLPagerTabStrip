@@ -26,6 +26,11 @@ import Foundation
 import UIKit
 
 open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollectionViewCell>: PagerTabStripViewController, PagerTabStripDataSource, PagerTabStripIsProgressiveDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    public func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController) {
+        // Empty Override
+    }
+    
 
     public var settings = ButtonBarPagerTabStripSettings()
     public var buttonBarItemSpec: ButtonBarItemSpec<ButtonBarCellType>!
@@ -354,5 +359,9 @@ open class ExampleBaseButtonBarPagerTabStripViewController: BaseButtonBarPagerTa
         if let highlightedImage = indicatorInfo.highlightedImage {
             cell.imageView.highlightedImage = highlightedImage
         }
+    }
+    
+    public override func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController) {
+        // Empty Override
     }
 }

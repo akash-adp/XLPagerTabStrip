@@ -36,6 +36,7 @@ public protocol IndicatorInfoProvider {
 public protocol PagerTabStripDelegate: AnyObject {
 
     func updateIndicator(for viewController: PagerTabStripViewController, fromIndex: Int, toIndex: Int)
+    func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController)
 }
 
 public protocol PagerTabStripIsProgressiveDelegate: PagerTabStripDelegate {
@@ -149,6 +150,9 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
     open override var shouldAutomaticallyForwardAppearanceMethods: Bool {
         return false
     }
+    
+    var didInitiateAnimatedMove: Bool = false
+    var moveInitialIndex: Int = 0
 
     open func moveToViewController(at index: Int, animated: Bool = true) {
         guard isViewLoaded && view.window != nil && currentIndex != index else {
@@ -157,6 +161,7 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
         }
 
         if animated && pagerBehaviour.skipIntermediateViewControllers && abs(currentIndex - index) > 1 {
+            didInitiateAnimatedMove = true
             var tmpViewControllers = viewControllers
             let currentChildVC = viewControllers[currentIndex]
             let fromIndex = currentIndex < index ? index - 1 : index + 1
@@ -169,7 +174,11 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
             containerView.setContentOffset(CGPoint(x: pageOffsetForChild(at: index), y: 0), animated: true)
         } else {
             (navigationController?.view ?? view).isUserInteractionEnabled = !animated
+            didInitiateAnimatedMove = animated
             containerView.setContentOffset(CGPoint(x: pageOffsetForChild(at: index), y: 0), animated: animated)
+             if !animated {
+                delegate?.pagerTabStrip(self, didMoveTo: viewControllers[index])
+            }
         }
     }
 
@@ -313,11 +322,23 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
 
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if containerView == scrollView {
+            moveInitialIndex = currentIndex
             lastPageNumber = pageFor(contentOffset: scrollView.contentOffset.x)
+        }
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if currentIndex != moveInitialIndex {
+            delegate?.pagerTabStrip(self, didMoveTo: viewControllers[currentIndex])
         }
     }
 
     open func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if didInitiateAnimatedMove == true {
+              didInitiateAnimatedMove = false
+              delegate?.pagerTabStrip(self, didMoveTo: viewControllers[currentIndex])
+        }
+        
         if containerView == scrollView {
             pagerTabStripChildViewControllersForScrolling = nil
             (navigationController?.view ?? view).isUserInteractionEnabled = true

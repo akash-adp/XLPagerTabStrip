@@ -37,7 +37,7 @@ public struct BarPagerTabStripSettings {
 }
 
 open class BarPagerTabStripViewController: PagerTabStripViewController, PagerTabStripDataSource, PagerTabStripIsProgressiveDelegate {
-
+    
     public var settings = BarPagerTabStripSettings()
 
     @IBOutlet weak public var barView: BarView!
@@ -94,5 +94,9 @@ open class BarPagerTabStripViewController: PagerTabStripViewController, PagerTab
 
     open func updateIndicator(for viewController: PagerTabStripViewController, fromIndex: Int, toIndex: Int) {
         barView.moveTo(index: toIndex, animated: true)
+    }
+    
+    public func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController) {
+        // Empty Override
     }
 }

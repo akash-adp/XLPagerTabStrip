@@ -109,4 +109,8 @@ open class SegmentedPagerTabStripViewController: PagerTabStripViewController, Pa
         super.scrollViewDidEndScrollingAnimation(scrollView)
         shouldUpdateSegmentedControl = true
     }
+    
+    public func pagerTabStrip(_ pagerTabStrip: PagerTabStripViewController, didMoveTo viewController: UIViewController) {
+        // Empty Override
+    }
 }
